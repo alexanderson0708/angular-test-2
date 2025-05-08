@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { DataModel } from '../../shared/data.model';
 import { TreeModule } from 'primeng/tree';
 import { TreeDragDropService, TreeNode } from 'primeng/api';
@@ -13,7 +13,8 @@ import { ButtonModule } from 'primeng/button';
   imports: [TreeModule, CardModule, DatePipe, ButtonModule],
   templateUrl: './tree.component.html',
   styleUrl: './tree.component.scss',
-  providers: [TreeDragDropService]
+  providers: [TreeDragDropService],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TreeComponent {
   data: DataModel[] = []
@@ -24,7 +25,7 @@ export class TreeComponent {
   childrenItem: string = ''
   isDisabled = false
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.http.get<DataModel[]>('assets/data.json').subscribe(res => {
@@ -34,6 +35,7 @@ export class TreeComponent {
       );
 
       this.changedData = [this.formatStructure(minItem)]
+      this.cdr.markForCheck()
     })
   }
 
@@ -56,8 +58,6 @@ export class TreeComponent {
     return newFormatData
   }
   showSelectedItem() {
-    console.log(this.selectedItem);
-
     const item = this.selectedItem;
 
     if (!item?.data) {
@@ -73,6 +73,8 @@ export class TreeComponent {
     this.childrenItem = item.children?.length
       ? item.children.map(child => child.data?.NAME).filter(Boolean).join(', ')
       : '';
+
+    this.cdr.markForCheck()
   }
 
   expandAll() {
