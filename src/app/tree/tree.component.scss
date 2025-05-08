@@ -1,0 +1,43 @@
+:host ::ngdeep{
+  .p-organizationchart-node{
+    padding: 0;
+  }
+}
+
+.card{
+  max-width: 1440px;
+  display: grid;
+  grid-template-columns: 40% 55%;
+  column-gap: 2rem;
+  font-size: small;
+}
+
+.main-info{
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+}
+
+.field{
+  display: flex;
+  column-gap: 0.5rem;
+  font-size: small;
+}
+
+.form-data{
+  font-weight: 400;
+}
+
+.btn-container{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.btn-container{
+  & p-button{
+    font-size: small;
+  }
+}

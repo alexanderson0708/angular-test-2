@@ -1,0 +1,51 @@
+<div class="card">
+  <div class="card-container">
+    <div class="btn-container">
+      <p-button
+        icon="pi pi-plus"
+        label="Expand all"
+        (click)="expandAll()"
+        [disabled]="isDisabled"
+      />
+      <p-button
+        icon="pi pi-minus"
+        label="Collapse all"
+        (click)="collapseAll()"
+        [disabled]="!isDisabled"
+      />
+    </div>
+    <p-tree
+      [value]="changedData"
+      styleClass="w-full md:w-[30rem]"
+      [draggableNodes]="true"
+      [droppableNodes]="true"
+      draggableScope="self"
+      droppableScope="self"
+      selectionMode="single"
+      [(selection)]="selectedItem"
+      (click)="showSelectedItem()"
+    />
+  </div>
+
+  @if (selectedData) {
+  <p-card header="Дополнительная информация">
+    <div class="main-info">
+      @for (item of selectedEntries; track $index) { @if (item[1] !== '') {
+      <div class="field">
+        <div class="title">{{ item[0] }}:</div>
+        @if (item[0] === "CRETED_DATE") {
+        <span class="form-data">{{ item[1] | date : "short" }}</span>
+        }@else{
+        <span class="form-data">{{ item[1] }}</span>
+        }
+      </div>
+      } } @if (selectedItem && selectedItem.children) {
+      <div class="field">
+        <div class="title">CHILDREN:</div>
+        <span class="form-data">{{ childrenItem }}</span>
+      </div>
+      }
+    </div>
+  </p-card>
+  }
+</div>
